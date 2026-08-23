@@ -7,10 +7,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -30,17 +32,20 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.otakeessen.bodysquirrel.R
 import com.otakeessen.bodysquirrel.data.MealType
 import com.otakeessen.bodysquirrel.data.MealTypeTotal
+import com.otakeessen.bodysquirrel.ui.theme.BodySquirrelTheme
 import java.util.Calendar
 import kotlin.math.roundToInt
 
@@ -51,22 +56,72 @@ fun HomeScreen(
     viewModel: HomeViewModel = viewModel(factory = HomeViewModel.Factory),
 ) {
     val state by viewModel.uiState.collectAsState()
+    HomeScreenContent(
+        state = state,
+        onAddMeal = onAddMeal,
+        modifier = modifier
+    )
+}
 
-    LazyColumn(
-        modifier = modifier.fillMaxSize(),
-        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-    ) {
-        item { Header() }
-        item { HeroSection() }
-        item { SquirrelEnergyCard(state) }
-        item { TodayProgressSection(state = state, onAddMeal = onAddMeal) }
-        item { DailyTipCard() }
+@Composable
+private fun HomeScreenContent(
+    state: HomeUiState,
+    onAddMeal: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Box(modifier = modifier.fillMaxSize()) {
+        // 1. Fixed Background Hero Section
+        HeroSection(modifier = Modifier.fillMaxSize())
+
+        // 2. Scrollable Content on top
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(bottom = 0.dp), // Padding handled by Surface
+        ) {
+            // Spacer for the fixed header
+            item {
+                Spacer(modifier = Modifier.statusBarsPadding().height(64.dp))
+            }
+
+            // 3. Transparent space to see the squirrel
+            item {
+                Spacer(modifier = Modifier.height(300.dp))
+            }
+
+            // 4. Content Cards onto a semi-transparent background
+            item {
+                Surface(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(topStart = 36.dp, topEnd = 36.dp),
+                    color = Color.White.copy(alpha = 0.4f),
+                    shadowElevation = 4.dp
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp, vertical = 24.dp)
+                            .padding(bottom = 48.dp), // Extra bottom space for scrolling
+                        verticalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        SquirrelEnergyCard(state)
+                        TodayProgressSection(state = state, onAddMeal = onAddMeal)
+                        DailyTipCard()
+                    }
+                }
+            }
+        }
+
+        // 5. Fixed Header at the top
+        Header(
+            modifier = Modifier
+                .fillMaxWidth()
+                .statusBarsPadding()
+                .padding(horizontal = 16.dp, vertical = 8.dp)
+        )
     }
 }
 
 @Composable
-private fun Header() {
+private fun Header(modifier: Modifier = Modifier) {
     val hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
     val greetingRes = when (hour) {
         in 5..11 -> R.string.greeting_morning
@@ -75,7 +130,7 @@ private fun Header() {
     }
 
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Column(modifier = Modifier.weight(1f)) {
@@ -83,35 +138,34 @@ private fun Header() {
                 text = stringResource(greetingRes),
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold,
+                color = Color.White
             )
             Text(
                 text = stringResource(R.string.subtitle),
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = Color.White.copy(alpha = 0.8f),
             )
         }
-        IconButton(onClick = { /* TODO: gifts (later milestone) */ }) {
+        IconButton(onClick = { /* TODO: gifts */ }) {
             Icon(
                 imageVector = Icons.Filled.Redeem,
                 contentDescription = stringResource(R.string.gift_button_desc),
+                tint = Color.White
             )
         }
     }
 }
 
 @Composable
-private fun HeroSection() {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .aspectRatio(0.62f)
-            .clip(RoundedCornerShape(24.dp)),
-    ) {
+private fun HeroSection(modifier: Modifier = Modifier) {
+    Box(modifier = modifier) {
         Image(
-            painter = painterResource(R.drawable.hero_room_background),
+            painter = painterResource(R.drawable.bs_background),
             contentDescription = null,
             contentScale = ContentScale.Crop,
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .offset(x = 0.dp, y = 0.dp),
         )
         Image(
             painter = painterResource(R.drawable.hero),
@@ -119,14 +173,16 @@ private fun HeroSection() {
             contentScale = ContentScale.Fit,
             modifier = Modifier
                 .align(Alignment.Center)
-                .fillMaxSize(0.92f),
-        )
+                .fillMaxSize(1f)
+                .offset(x = 0.dp, y = 0.dp),
+        )/*
         SpeechBubble(
             text = stringResource(R.string.speech_bubble),
             modifier = Modifier
-                .align(Alignment.BottomStart)
-                .padding(12.dp),
-        )
+                .align(Alignment.CenterStart)
+                .padding(start = 24.dp)
+                .offset(y = 0.dp),
+        )*/
     }
 }
 
@@ -277,5 +333,16 @@ private fun DailyTipCard() {
                 style = MaterialTheme.typography.bodyMedium,
             )
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun HomeScreenPreview() {
+    BodySquirrelTheme {
+        HomeScreenContent(
+            state = HomeUiState(),
+            onAddMeal = {}
+        )
     }
 }
