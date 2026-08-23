@@ -1,0 +1,41 @@
+<resources>
+    <string name="app_name">Body Squirrel</string>
+
+    <!-- Home -->
+    <string name="greeting_morning">Доброго ранку</string>
+    <string name="greeting_afternoon">Доброго дня</string>
+    <string name="greeting_evening">Доброго вечора</string>
+    <string name="subtitle">Наповнімо день енергією</string>
+    <string name="gift_button_desc">Подарунки</string>
+    <string name="speech_bubble">Ти вже поснідав(-ла)?</string>
+
+    <!-- Energy -->
+    <string name="energy_title">Енергія білочки</string>
+    <string name="energy_kcal_left">Залишилось %1$d ккал сьогодні</string>
+    <string name="energy_kcal_over">Перевищення на %1$d ккал</string>
+    <string name="energy_progress">Прогрес енергії</string>
+
+    <!-- Progress -->
+    <string name="today_progress_title">Сьогоднішній прогрес</string>
+    <string name="meal_breakfast">Сніданок</string>
+    <string name="meal_lunch">Обід</string>
+    <string name="meal_dinner">Вечеря</string>
+    <string name="meal_snacks">Перекуси</string>
+    <string name="meal_water">Вода</string>
+    <string name="add_meal">Додати прийом їжі</string>
+    <string name="empty_progress">Поки нічого не записано</string>
+    <string name="water_logged">Записано %1$s</string>
+    <string name="kcal_short">ккал</string>
+    <string name="ml_short">мл</string>
+
+    <!-- Daily tip -->
+    <string name="daily_tip_title">Порада дня</string>
+    <string name="daily_tip_text">Випий склянку води перед кожним прийомом їжі — це покращує травлення та дає відчуття ситості.</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Головна</string>
+    <string name="nav_meals">Прийоми</string>
+    <string name="nav_progress">Прогрес</string>
+    <string name="nav_profile">Профіль</string>
+    <string name="placeholder_coming_soon">Скоро буде</string>
+</resources>

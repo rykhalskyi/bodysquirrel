@@ -1,0 +1,41 @@
+<resources>
+    <string name="app_name">Body Squirrel</string>
+
+    <!-- Home -->
+    <string name="greeting_morning">Guten Morgen</string>
+    <string name="greeting_afternoon">Guten Tag</string>
+    <string name="greeting_evening">Guten Abend</string>
+    <string name="subtitle">Tanken wir Kraft für den Tag</string>
+    <string name="gift_button_desc">Geschenke</string>
+    <string name="speech_bubble">Hast du schon gefrühstückt?</string>
+
+    <!-- Energy -->
+    <string name="energy_title">Eichhörnchen-Energie</string>
+    <string name="energy_kcal_left">%1$d kcal heute übrig</string>
+    <string name="energy_kcal_over">%1$d kcal über dem Budget</string>
+    <string name="energy_progress">Energie-Fortschritt</string>
+
+    <!-- Progress -->
+    <string name="today_progress_title">Heutiger Fortschritt</string>
+    <string name="meal_breakfast">Frühstück</string>
+    <string name="meal_lunch">Mittagessen</string>
+    <string name="meal_dinner">Abendessen</string>
+    <string name="meal_snacks">Snacks</string>
+    <string name="meal_water">Wasser</string>
+    <string name="add_meal">Mahlzeit hinzufügen</string>
+    <string name="empty_progress">Noch nichts eingetragen</string>
+    <string name="water_logged">%1$s eingetragen</string>
+    <string name="kcal_short">kcal</string>
+    <string name="ml_short">ml</string>
+
+    <!-- Daily tip -->
+    <string name="daily_tip_title">Tipp des Tages</string>
+    <string name="daily_tip_text">Trink vor jeder Mahlzeit ein Glas Wasser — das hilft der Verdauung und macht schneller satt.</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Start</string>
+    <string name="nav_meals">Mahlzeiten</string>
+    <string name="nav_progress">Fortschritt</string>
+    <string name="nav_profile">Profil</string>
+    <string name="placeholder_coming_soon">Demnächst verfügbar</string>
+</resources>
