@@ -10,7 +10,13 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface DishDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(dish: DishEntity)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(dishes: List<DishEntity>)
+
+    @Query("SELECT * FROM dishes WHERE id = :id")
+    suspend fun getById(id: String): DishEntity?
 
     @Query("SELECT * FROM dishes ORDER BY name")
     fun observeAll(): Flow<List<DishEntity>>
