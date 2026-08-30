@@ -28,11 +28,23 @@ import com.otakeessen.bodysquirrel.ui.home.HomeScreen
 import com.otakeessen.bodysquirrel.ui.navigation.Destination
 import com.otakeessen.bodysquirrel.ui.navigation.bottomNavDestinations
 
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import com.otakeessen.bodysquirrel.ui.addmeal.AddMealSheet
+
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
+    var showAddMealSheet by remember { mutableStateOf(false) }
+
+    if (showAddMealSheet) {
+        AddMealSheet(
+            onDismissRequest = { showAddMealSheet = false }
+        )
+    }
 
     Scaffold(
         bottomBar = {
@@ -64,7 +76,7 @@ fun MainScreen() {
                 .padding(innerPadding),
         ) {
             composable(Destination.Home.route) {
-                HomeScreen(onAddMeal = { /* TODO: M3 Add Meal flow */ })
+                HomeScreen(onAddMeal = { showAddMealSheet = true })
             }
             composable(Destination.Meals.route) {
                 PlaceholderScreen(R.string.nav_meals)
